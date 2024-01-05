@@ -226,6 +226,7 @@ def EncodedImage() -> Type[ImageMixin]:
         @classmethod
         def validate(cls, v):
             from lance.arrow import ImageURIArray, EncodedImageType, EncodedImageArray
+
             if isinstance(v, ImageURIArray):
                 v = v.read_uris()
             if isinstance(v, pa.BinaryArray):
@@ -302,6 +303,7 @@ def ImageURI() -> Type[ImageMixin]:
                 field_schema["format"] = "string"
 
     return ImageURI
+
 
 if PYDANTIC_VERSION.major < 2:
 
