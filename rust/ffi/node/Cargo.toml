@@ -5,6 +5,7 @@ description = "Serverless, low-latency vector database for AI applications"
 license = "Apache-2.0"
 edition = "2018"
 exclude = ["index.node"]
+rust-version = "1.75"
 
 [lib]
 crate-type = ["cdylib"]
