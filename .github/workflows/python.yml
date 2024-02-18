@@ -42,15 +42,23 @@ jobs:
         source .venv/bin/activate
         uv pip install --editable .[tests]
         uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
-        uv pip install pytest pytest-mock ruff
-    - name: Format check
-      run: ruff format --check .
+        uv pip install pytest pytest-mock ruff        
+    - name: Format check    
+      run: |
+        source .venv/bin/activate    
+        ruff format --check .
     - name: Lint
-      run: ruff .
+      run: |
+        source .venv/bin/activate    
+        ruff .
     - name: Run tests
-      run: pytest -m "not slow" -x -v --durations=30 tests
+      run: |
+        source .venv/bin/activate    
+        pytest -m "not slow" -x -v --durations=30 tests
     - name: doctest
-      run: pytest --doctest-modules lancedb
+      run: |
+        source .venv/bin/activate    
+        pytest --doctest-modules lancedb
   macos:
     name: "Platform: ${{ matrix.config.name }}"
     timeout-minutes: 30
