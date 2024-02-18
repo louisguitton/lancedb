@@ -38,6 +38,7 @@ jobs:
         curl -LsSf astral.sh/uv/install.sh | sh
     - name: Install lancedb
       run: |
+        uv venv
         uv pip install --editable .[tests]
         uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
         uv pip install pytest pytest-mock ruff
@@ -80,6 +81,7 @@ jobs:
         curl -LsSf astral.sh/uv/install.sh | sh        
     - name: Install lancedb
       run: |
+        uv venv
         uv pip install -e .[tests]
         uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
         uv pip install pytest pytest-mock
@@ -106,6 +108,7 @@ jobs:
         curl -LsSf astral.sh/uv/install.sh | sh        
     - name: Install lancedb
       run: |
+        uv venv        
         uv pip install "pydantic<2"
         uv pip install -e .[tests]
         uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
