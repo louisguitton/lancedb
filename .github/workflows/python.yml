@@ -39,6 +39,7 @@ jobs:
     - name: Install lancedb
       run: |
         uv venv
+        source .venv/bin/activate
         uv pip install --editable .[tests]
         uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
         uv pip install pytest pytest-mock ruff
@@ -50,7 +51,7 @@ jobs:
       run: pytest -m "not slow" -x -v --durations=30 tests
     - name: doctest
       run: pytest --doctest-modules lancedb
-  platform:
+  macos:
     name: "Platform: ${{ matrix.config.name }}"
     timeout-minutes: 30
     strategy:
@@ -60,8 +61,6 @@ jobs:
             runner: macos-13
           - name: Arm Mac
             runner: macos-14
-          - name: x86 Windows
-            runner: windows-latest
     runs-on: "${{ matrix.config.runner }}"
     defaults:
       run:
@@ -87,6 +86,40 @@ jobs:
         uv pip install pytest pytest-mock
     - name: Run tests
       run: pytest -m "not slow" -x -v --durations=30 tests
+  windows:
+    name: "Platform: ${{ matrix.config.name }}"
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        config:
+          - name: x86 Windows
+            runner: windows-latest
+    runs-on: "${{ matrix.config.runner }}"
+    defaults:
+      run:
+        shell: bash
+        working-directory: python
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Install uv
+      run: |
+        irm https://astral.sh/uv/install.ps1 | iex        
+    - name: Install lancedb
+      run: |
+        uv venv
+        .\.venv\Scripts\activate.ps1
+        uv pip install -e .[tests]
+        uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
+        uv pip install pytest pytest-mock
+    - name: Run tests
+      run: pytest -m "not slow" -x -v --durations=30 tests      
   pydantic1x:
     timeout-minutes: 30
     runs-on: "ubuntu-22.04"
@@ -109,6 +142,7 @@ jobs:
     - name: Install lancedb
       run: |
         uv venv        
+        source .venv/bin/activate        
         uv pip install "pydantic<2"
         uv pip install -e .[tests]
         uv pip install tantivy@git+https://github.com/quickwit-oss/tantivy-py#164adc87e1a033117001cf70e38c82a53014d985
