@@ -33,31 +33,18 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: 3.${{ matrix.python-minor-version }}
-    - name: Install uv
-      run: |
-        curl -LsSf astral.sh/uv/install.sh | sh
     - name: Install lancedb
       run: |
-        uv venv
-        source .venv/bin/activate
-        uv pip install --editable .[tests]
-        uv pip install tantivy pytest pytest-mock ruff
+        pip install --editable .[tests]
+        pip install tantivy pytest pytest-mock ruff
     - name: Format check    
-      run: |
-        source .venv/bin/activate    
-        ruff format --check .
+      run: ruff format --check .
     - name: Lint
-      run: |
-        source .venv/bin/activate    
-        ruff .
+      run: ruff .
     - name: Run tests
-      run: |
-        source .venv/bin/activate    
-        pytest -m "not slow" -x -v --durations=30 tests
+      run: pytest -m "not slow" -x -v --durations=30 tests
     - name: doctest
-      run: |
-        source .venv/bin/activate    
-        pytest --doctest-modules lancedb
+      run: pytest --doctest-modules lancedb
   macos:
     name: "Platform: ${{ matrix.config.name }}"
     timeout-minutes: 30
@@ -82,19 +69,12 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
-    - name: Install uv
-      run: |
-        curl -LsSf astral.sh/uv/install.sh | sh        
     - name: Install lancedb
       run: |
-        uv venv
-        source .venv/bin/activate        
-        uv pip install -e .[tests]
-        uv pip install tantivy pytest pytest-mock
+        pip install -e .[tests]
+        pip install tantivy pytest pytest-mock
     - name: Run tests
-      run: |
-        source .venv/bin/activate      
-        pytest -m "not slow" -x -v --durations=30 tests
+      run: pytest -m "not slow" -x -v --durations=30 tests
   windows:
     name: "Platform: ${{ matrix.config.name }}"
     timeout-minutes: 30
@@ -117,20 +97,12 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
-    - name: Install uv
-      shell: pwsh
-      run: |
-        irm https://astral.sh/uv/install.ps1 | iex        
     - name: Install lancedb
       run: |
-        uv venv
-        .\.venv\Scripts\activate.ps1
-        uv pip install -e .[tests]
-        uv pip install tantivy pytest pytest-mock
+        pip install -e .[tests]
+        pip install tantivy pytest pytest-mock
     - name: Run tests
-      run: |
-        .\.venv\Scripts\activate.ps1      
-        pytest -m "not slow" -x -v --durations=30 tests      
+      run: pytest -m "not slow" -x -v --durations=30 tests      
   pydantic1x:
     timeout-minutes: 30
     runs-on: "ubuntu-22.04"
@@ -147,21 +119,12 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: 3.9
-    - name: Install uv
-      run: |
-        curl -LsSf astral.sh/uv/install.sh | sh        
     - name: Install lancedb
-      run: |
-        uv venv        
-        source .venv/bin/activate        
-        uv pip install "pydantic<2"
-        uv pip install -e .[tests]        
-        uv pip install tantivy pytest pytest-mock
+      run: | 
+        pip install "pydantic<2"
+        pip install -e .[tests]        
+        pip install tantivy pytest pytest-mock
     - name: Run tests
-      run: |
-        source .venv/bin/activate              
-        pytest -m "not slow" -x -v --durations=30 tests
+      run: pytest -m "not slow" -x -v --durations=30 tests
     - name: doctest
-      run: |
-        source .venv/bin/activate              
-        pytest --doctest-modules lancedb
+      run: pytest --doctest-modules lancedb
